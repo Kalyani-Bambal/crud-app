@@ -8,7 +8,7 @@ pipeline {
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         SONAR_TOKEN = credentials('sonar-token')
-        SONAR_ORGANIZATION = 'sonar.organization=kalyani-bambal'
+        SONAR_ORGANIZATION = 'kalyani-bambal'
         SONAR_PROJECT_KEY = 'kalyani-bambal'
     }
 
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarCloud') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner \
-  -Dsonar.organization=sonar.organization=kalyani-bambal \
+  -Dsonar.organization=kalyani-bambal \
   -Dsonar.projectKey=kalyani-bambal \
   -Dsonar.sources=. \
   -Dsonar.host.url=https://sonarcloud.io '''
