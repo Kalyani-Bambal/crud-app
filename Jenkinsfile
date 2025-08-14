@@ -17,14 +17,16 @@ pipeline {
         stage('Code-Analysis') {
             steps {
                 withSonarQubeEnv('SonarCloud') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner \
-  -Dsonar.organization=jenkins \
-  -Dsonar.projectKey=jenkins-project-123456 \
-  -Dsonar.sources=. \
-  -Dsonar.host.url=https://sonarcloud.io '''
-                }
-            }
-        }
+                     sh '''$SCANNER_HOME/bin/sonar-scanner -X \
+     -Dsonar.organization=jenkins \
+     -Dsonar.projectKey=jenkins-project-123456 \
+     -Dsonar.sources=. \
+     -Dsonar.host.url=https://sonarcloud.io \
+     -Dsonar.login=$SONAR_TOKEN'''
+          }
+       } 
+   }
+
        
         
       
