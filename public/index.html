@@ -4,119 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Operations</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f6f9;
-            padding: 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
-        h1 {
+        header {
             text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
+            padding: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
         }
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+            color: white;
+        }
+        .btn-create { background: #28a745; }
+        .btn-add { background: #007bff; }
+        .btn-get { background: #17a2b8; }
+        .btn-update { background: #ffc107; color: black; }
+        .btn-delete { background: #dc3545; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        td {
+            background: #f9f9f9;
         }
         #result {
-            white-space: pre-wrap;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>CRUD Operations</h1>
+<header>🚀 CRUD Operations Dashboard</header>
 
-        <div class="btn-group">
-            <button class="btn btn-primary" onclick="createTable()">Create Table</button>
-            <button class="btn btn-success" onclick="addItem()">Add Item</button>
-            <button class="btn btn-info text-white" onclick="getItems()">Get Items</button>
-            <button class="btn btn-warning" onclick="updateItem()">Update Item</button>
-            <button class="btn btn-danger" onclick="deleteItem()">Delete Item</button>
-        </div>
+<div class="container">
+    <button class="btn btn-create" onclick="createTable()">Create Table</button>
+    <button class="btn btn-add" onclick="addItem()">Add Item</button>
+    <button class="btn btn-get" onclick="getItems()">Get Items</button>
+    <button class="btn btn-update" onclick="updateItem()">Update Item</button>
+    <button class="btn btn-delete" onclick="deleteItem()">Delete Item</button>
 
-        <div class="card shadow">
-            <div class="card-body">
-                <h5 class="card-title">Result</h5>
-                <div id="result" class="card-text"></div>
-            </div>
-        </div>
-    </div>
+    <div id="result">Results will appear here...</div>
+</div>
 
-    <!-- JavaScript -->
-    <script>
-        function createTable() {
-            fetch('/createTable')
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data);
-        }
+<script>
+    function createTable() {
+        fetch('/createTable')
+            .then(response => response.text())
+            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
+            .catch(err => showError(err));
+    }
 
-        function addItem() {
-            const name = prompt('Enter item name:');
-            if (!name) return;
+    function addItem() {
+        const name = prompt('Enter item name:');
+        if (!name) return;
+        fetch('/addItem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        })
+            .then(response => response.text())
+            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
+            .catch(err => showError(err));
+    }
 
-            fetch('/addItem', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name })
-            })
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data);
-        }
-
-        function getItems() {
-            fetch('/getItems')
-                .then(response => response.json())
-                .then(data => {
-                    const resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = '';
-                    if (data.length === 0) {
-                        resultDiv.innerHTML = '<em>No items found.</em>';
-                    } else {
-                        data.forEach(item => {
-                            resultDiv.innerHTML += `🟢 <strong>ID:</strong> ${item.id}, <strong>Name:</strong> ${item.name}<br>`;
-                        });
-                    }
+    function getItems() {
+        fetch('/getItems')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.length) {
+                    document.getElementById('result').innerHTML = `<p>No items found.</p>`;
+                    return;
+                }
+                let table = `<table>
+                                <tr><th>ID</th><th>Name</th></tr>`;
+                data.forEach(item => {
+                    table += `<tr><td>${item.id}</td><td>${item.name}</td></tr>`;
                 });
-        }
-
-        function updateItem() {
-            const id = prompt('Enter item ID to update:');
-            if (!id) return;
-            const name = prompt('Enter new item name:');
-            if (!name) return;
-
-            fetch(`/updateItem/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name })
+                table += `</table>`;
+                document.getElementById('result').innerHTML = table;
             })
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data);
-        }
+            .catch(err => showError(err));
+    }
 
-        function deleteItem() {
-            const id = prompt('Enter item ID to delete:');
-            if (!id) return;
+    function updateItem() {
+        const id = prompt('Enter item ID to update:');
+        const name = prompt('Enter new item name:');
+        if (!id || !name) return;
+        fetch(`/updateItem/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        })
+            .then(response => response.text())
+            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
+            .catch(err => showError(err));
+    }
 
-            fetch(`/deleteItem/${id}`, {
-                method: 'DELETE'
-            })
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data);
-        }
-    </script>
+    function deleteItem() {
+        const id = prompt('Enter item ID to delete:');
+        if (!id) return;
+        fetch(`/deleteItem/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.text())
+            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
+            .catch(err => showError(err));
+    }
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    function showError(err) {
+        document.getElementById('result').innerHTML = `<p style="color:red;">Error: ${err}</p>`;
+    }
+</script>
+
 </body>
 </html>
