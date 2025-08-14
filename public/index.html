@@ -7,72 +7,76 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            background: linear-gradient(135deg, #f9d6d2, #d6eaff);
             margin: 0;
             padding: 0;
-            color: #333;
+            color: #444;
         }
         header {
             text-align: center;
             padding: 20px;
             color: white;
-            background: rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
             font-size: 1.8rem;
             letter-spacing: 1px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
         }
         .container {
-            max-width: 700px;
+            max-width: 750px;
             margin: 40px auto;
-            background: white;
-            padding: 20px;
+            background: #ffffffcc;
+            padding: 25px;
             border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
         }
         .btn {
-            padding: 10px 20px;
+            padding: 12px 20px;
             margin: 5px;
             border: none;
             cursor: pointer;
             border-radius: 8px;
             font-size: 15px;
-            transition: 0.3s;
+            transition: 0.3s ease-in-out;
             color: white;
         }
-        .btn-create { background: #28a745; }
-        .btn-add { background: #007bff; }
-        .btn-get { background: #17a2b8; }
-        .btn-update { background: #ffc107; color: black; }
-        .btn-delete { background: #dc3545; }
+        .btn-create { background: #4CAF50; }
+        .btn-add { background: #5C6BC0; }
+        .btn-get { background: #26C6DA; }
+        .btn-update { background: #FFB74D; color: black; }
+        .btn-delete { background: #E57373; }
 
         .btn:hover {
-            transform: translateY(-2px);
+            transform: scale(1.05);
             box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
         }
         table, th, td {
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             text-align: center;
-            padding: 8px;
+            padding: 10px;
         }
         th {
-            background: #007bff;
+            background: #6a11cb;
             color: white;
         }
         td {
-            background: #f9f9f9;
+            background: #fafafa;
         }
         #result {
             margin-top: 20px;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
 
-<header>🚀 CRUD Operations Dashboard</header>
+<header>✨ CRUD Operations Dashboard</header>
 
 <div class="container">
     <button class="btn btn-create" onclick="createTable()">Create Table</button>
