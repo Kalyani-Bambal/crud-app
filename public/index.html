@@ -5,69 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Operations</title>
     <style>
+        /* Overall look */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f9d6d2, #d6eaff);
+            background: linear-gradient(135deg, #ffe29f, #ffa99f, #ff719a);
+            background-size: 300% 300%;
+            animation: gradientBG 10s ease infinite;
             margin: 0;
             padding: 0;
             color: #444;
         }
+
+        /* Animated background gradient */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header styling */
         header {
             text-align: center;
             padding: 20px;
             color: white;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
-            font-size: 1.8rem;
+            font-size: 2rem;
             letter-spacing: 1px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
         }
+
+        /* Main container */
         .container {
             max-width: 750px;
             margin: 40px auto;
-            background: #ffffffcc;
+            background: rgba(255, 255, 255, 0.95);
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+            border-radius: 20px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
         }
+
+        /* Buttons */
         .btn {
             padding: 12px 20px;
-            margin: 5px;
+            margin: 8px;
             border: none;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 15px;
             transition: 0.3s ease-in-out;
             color: white;
+            font-weight: 500;
         }
-        .btn-create { background: #4CAF50; }
-        .btn-add { background: #5C6BC0; }
-        .btn-get { background: #26C6DA; }
-        .btn-update { background: #FFB74D; color: black; }
-        .btn-delete { background: #E57373; }
 
+        .btn-create { background: linear-gradient(135deg, #43cea2, #185a9d); }
+        .btn-add { background: linear-gradient(135deg, #5C6BC0, #3949ab); }
+        .btn-get { background: linear-gradient(135deg, #26C6DA, #0097a7); }
+        .btn-update { background: linear-gradient(135deg, #FFB74D, #f57c00); color: white; }
+        .btn-delete { background: linear-gradient(135deg, #E57373, #d32f2f); }
+
+        /* Button hover */
         .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.25);
         }
+
+        /* Table styling */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
+            font-size: 0.95rem;
         }
-        table, th, td {
-            border: 1px solid #ddd;
+
+        th, td {
+            padding: 12px;
             text-align: center;
-            padding: 10px;
         }
+
         th {
-            background: #6a11cb;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
+            font-weight: 600;
         }
-        td {
-            background: #fafafa;
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
+
+        tr:nth-child(odd) {
+            background-color: #fafafa;
+        }
+
         #result {
             margin-top: 20px;
             font-size: 1rem;
@@ -85,7 +117,7 @@
     <button class="btn btn-update" onclick="updateItem()">Update Item</button>
     <button class="btn btn-delete" onclick="deleteItem()">Delete Item</button>
 
-    <div id="result">Results will appear here...</div>
+    <div id="result">📋 Results will appear here...</div>
 </div>
 
 <script>
@@ -145,9 +177,7 @@
     function deleteItem() {
         const id = prompt('Enter item ID to delete:');
         if (!id) return;
-        fetch(`/deleteItem/${id}`, {
-            method: 'DELETE'
-        })
+        fetch(`/deleteItem/${id}`, { method: 'DELETE' })
             .then(response => response.text())
             .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
             .catch(err => showError(err));
