@@ -1,193 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CRUD Operations</title>
-    <style>
-        /* Overall look */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ffe29f, #ffa99f, #ff719a);
-            background-size: 300% 300%;
-            animation: gradientBG 10s ease infinite;
-            margin: 0;
-            padding: 0;
-            color: #444;
-        }
-
-        /* Animated background gradient */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Header styling */
-        header {
-            text-align: center;
-            padding: 20px;
-            color: white;
-            background: linear-gradient(135deg, #00b09b, #96c93d);
-            font-size: 2rem;
-            letter-spacing: 1px;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 750px;
-            margin: 40px auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 12px 20px;
-            margin: 8px;
-            border: none;
-            cursor: pointer;
-            border-radius: 12px;
-            font-size: 15px;
-            transition: 0.3s ease-in-out;
-            color: white;
-            font-weight: 500;
-        }
-
-        .btn-create { background: linear-gradient(135deg, #43cea2, #185a9d); }
-        .btn-add { background: linear-gradient(135deg, #5C6BC0, #3949ab); }
-        .btn-get { background: linear-gradient(135deg, #26C6DA, #0097a7); }
-        .btn-update { background: linear-gradient(135deg, #FFB74D, #f57c00); color: white; }
-        .btn-delete { background: linear-gradient(135deg, #E57373, #d32f2f); }
-
-        /* Button hover */
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0px 6px 15px rgba(0,0,0,0.25);
-        }
-
-        /* Table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background: linear-gradient(135deg, #00b09b, #96c93d);
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #fafafa;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-size: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>✨ CRUD Operations Dashboard</header>
 
 <div class="container">
-    <button class="btn btn-create" onclick="createTable()">Create Table</button>
-    <button class="btn btn-add" onclick="addItem()">Add Item</button>
-    <button class="btn btn-get" onclick="getItems()">Get Items</button>
-    <button class="btn btn-update" onclick="updateItem()">Update Item</button>
-    <button class="btn btn-delete" onclick="deleteItem()">Delete Item</button>
-
+    <div class="button-group">
+        <button class="btn btn-create" onclick="createTable()">Create Table</button>
+        <button class="btn btn-add" onclick="addItem()">Add Item</button>
+        <button class="btn btn-get" onclick="getItems()">Get Items</button>
+        <button class="btn btn-update" onclick="updateItem()">Update Item</button>
+        <button class="btn btn-delete" onclick="deleteItem()">Delete Item</button>
+    </div>
     <div id="result">📋 Results will appear here...</div>
 </div>
 
-<script>
-    function createTable() {
-        fetch('/createTable')
-            .then(response => response.text())
-            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
-            .catch(err => showError(err));
-    }
-
-    function addItem() {
-        const name = prompt('Enter item name:');
-        if (!name) return;
-        fetch('/addItem', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name })
-        })
-            .then(response => response.text())
-            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
-            .catch(err => showError(err));
-    }
-
-    function getItems() {
-        fetch('/getItems')
-            .then(response => response.json())
-            .then(data => {
-                if (!data.length) {
-                    document.getElementById('result').innerHTML = `<p>No items found.</p>`;
-                    return;
-                }
-                let table = `<table>
-                                <tr><th>ID</th><th>Name</th></tr>`;
-                data.forEach(item => {
-                    table += `<tr><td>${item.id}</td><td>${item.name}</td></tr>`;
-                });
-                table += `</table>`;
-                document.getElementById('result').innerHTML = table;
-            })
-            .catch(err => showError(err));
-    }
-
-    function updateItem() {
-        const id = prompt('Enter item ID to update:');
-        const name = prompt('Enter new item name:');
-        if (!id || !name) return;
-        fetch(`/updateItem/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name })
-        })
-            .then(response => response.text())
-            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
-            .catch(err => showError(err));
-    }
-
-    function deleteItem() {
-        const id = prompt('Enter item ID to delete:');
-        if (!id) return;
-        fetch(`/deleteItem/${id}`, { method: 'DELETE' })
-            .then(response => response.text())
-            .then(data => document.getElementById('result').innerHTML = `<p>${data}</p>`)
-            .catch(err => showError(err));
-    }
-
-    function showError(err) {
-        document.getElementById('result').innerHTML = `<p style="color:red;">Error: ${err}</p>`;
-    }
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
 

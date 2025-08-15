@@ -1,0 +1,105 @@
+/* Background & font */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ffe29f, #ffa99f, #ff719a);
+    background-size: 300% 300%;
+    animation: gradientBG 10s ease infinite;
+    margin: 0;
+    padding: 0;
+    color: #444;
+}
+
+/* Background animation */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+/* Main container */
+.container {
+    max-width: 750px;
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: 0.3s ease-in-out;
+    color: white;
+    font-weight: 500;
+    flex: 1 1 40%;
+    min-width: 120px;
+}
+
+.btn-create { background: linear-gradient(135deg, #43cea2, #185a9d); }
+.btn-add { background: linear-gradient(135deg, #5C6BC0, #3949ab); }
+.btn-get { background: linear-gradient(135deg, #26C6DA, #0097a7); }
+.btn-update { background: linear-gradient(135deg, #FFB74D, #f57c00); }
+.btn-delete { background: linear-gradient(135deg, #E57373, #d32f2f); }
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.25);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    color: white;
+    font-weight: 600;
+}
+
+tr:nth-child(even) { background-color: #f2f2f2; }
+tr:nth-child(odd) { background-color: #fafafa; }
+
+/* Result box */
+#result {
+    margin-top: 20px;
+    font-size: 1rem;
+    text-align: center;
+}
+
