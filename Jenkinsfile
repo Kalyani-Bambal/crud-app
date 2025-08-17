@@ -49,7 +49,7 @@ pipeline {
             }
         }
 
-        /*
+       
         stage('Deploy To EC2') {
             steps {
                 script {
@@ -58,7 +58,6 @@ pipeline {
                 }
             }
         }
-        */
 
     }
 }

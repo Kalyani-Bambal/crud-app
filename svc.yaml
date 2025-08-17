@@ -6,9 +6,8 @@ metadata:
 spec:
   selector:
     name: crud-app
-  type: NodePort
-  ports: 
-  - port: 3000        # Service port (inside cluster)
-    targetPort: 3000  # Container port
-    nodePort: 30080   # Optional: node port (range 30000–32767)
+  type: LoadBalancer
+  ports:
+    - port: 3000
+      targetPort: 3000
 
