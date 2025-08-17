@@ -29,10 +29,21 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'docker-cred') {
-                        def buildNumber = env.BUILD_NUMBER ?: '1'
-                        def image = docker.build("kalyanibambal97/crud-123:${buildNumber}")
+                        // Generate version tag like v1, v2, ...
+                        def versionTag = "v${env.BUILD_NUMBER}"
+                        def imageName = "kalyanibambal97/crud-123"
+
+                        // Build Docker image with version tag
+                        def image = docker.build("${imageName}:${versionTag}")
+
+                        // Push version tag
                         image.push()
-                        image.push("latest")
+
+                        // Optionally, also update 'latest'
+                        sh "docker tag ${imageName}:${versionTag} ${imageName}:latest"
+                        sh "docker push ${imageName}:latest"
+
+                        echo "✅ Docker image pushed: ${imageName}:${versionTag} and latest"
                     }
                 }
             }
