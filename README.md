@@ -1,131 +1,177 @@
-testing 123
-# DevOps Mentor Task
+# 🛠️ CRUD App with Jenkins, Docker, MySQL, and SonarCloud
 
-## Presentation Video
+A simple CRUD (Create, Read, Update, Delete) Node.js application with MySQL database hosted on AWS RDS. Jenkins is used for CI/CD pipeline and SonarCloud for static code analysis.
 
-https://github.com/user-attachments/assets/cc52304e-0107-46f6-96e3-c20b7738408b
+---
+
+## 📋 Project Setup Guide
+
+### 1. 🚀 Launch an EC2 Instance (Ubuntu)
+
+- Create an EC2 instance using **Ubuntu (Free Tier)**
+- Open ports in the **security group**:
+  - `22` (SSH)
+  - `8080` (Jenkins)
+  - `3000` (Node.js app)
+- Connect via SSH:
+  ```bash
+  ssh -i <your-key>.pem ubuntu@<EC2_PUBLIC_IP>
+  ```
+---
 
 ## Architecture Diagrams
 
 ### CI/CD Pipeline Diagram
+ ```bash
+ <img width="1536" height="1024" alt="Architecture Diagram of crud-app" src="https://github.com/user-attachments/assets/7af86469-2f04-4a75-ae3f-e4644114cdbd" />
+ ```
+---  
+### 2. ⚙️ Run EC2 Setup Script
 
-![arch2](https://github.com/user-attachments/assets/84e7501b-e925-455c-8674-6e343225fd68)
+- Run the script to install:
+    - System updates
+    - Docker
+    - Jenkins
 
-### Terraform and AWS Resources Diagram
+  ```bash
+  chmod +x scripts/docker-jenkins-install.sh
+  ./scripts/docker-jenkins-install.sh
+  ```
+---
 
-![arch1](https://github.com/user-attachments/assets/71f63fb4-f611-459e-93bb-6cd232a5771a)
+### 3. 🗄️ AWS RDS (MySQL)
 
-## Dockerizing the Node.js App
-
-The Dockerfile for the Node.js app is included in the repository.
-
-## Setting Up AWS Resources
-
-The following AWS resources are set up using Terraform:
-
-1. **EC2 Instances**:
-   - `nodejsapp`
-   - `jenkins`
-   - `monitoring`
-
-2. **RDS Instance**:
-   - mysql
- 
-3. **Key Pairs**:
-   - `jenkins`
-   - `nodejsapp`
-
-4. **Security Groups**:
-   - `jenkins`
-   - `nodejsapp`
-   - `rds`
-   - `monitoring`
-  
-## Terraform Templates
-
-The Terraform templates provision the required infrastructure on AWS. The following files are included in the repository:
-
-- `backend.tf`: Configures the backend for Terraform state storage.
-- `instances.tf`: Defines the EC2 instances for Jenkins, monitoring, and the Node.js app.
-- `keypairs.tf`: Defines the key pairs for SSH access to the instances.
-- `providers.tf`: Configures the providers required for the AWS resources.
-- `rds.tf`: Defines the RDS instance for the MySQL database.
-- `secgrp.tf`: Defines the security groups for Jenkins, monitoring, Node.js app, and RDS.
-- `vars.tf`: Defines the variables used in the Terraform configuration.
-
-## Monitoring
-
-Monitoring is set up using Prometheus and Grafana. These services are deployed on a separate EC2 instance.
-
-1. **Prometheus Configuration**:
-   - Scrape configurations for the Node.js app and other services are added to \`prometheus.yml\`.
-
-2. **Grafana Configuration**:
-   - Prometheus is added as a data source in Grafana.
-   - Dashboards are created to visualize key metrics.
-
-## Setting Up CI/CD Pipeline
-
-The Jenkinsfile for setting up the CI/CD pipeline is included in the repository.  
-
-## Setup and Run Instructions
-
-### Step-by-Step Process
-
-1. **Created an S3 Bucket for Terraform State File**:
-   - I started by creating an S3 bucket to store the Terraform state file. This bucket is essential for managing the state of the Terraform deployment and ensuring consistent provisioning of resources.
-
-2. **Provisioned Resources Using Terraform**:
-   - I used Terraform from my local computer to provision the necessary AWS resources. This involved:
-     - Initializing Terraform with `terraform init`.
-     - Validating the configuration with `terraform validate`.
-     - Planning the deployment with `terraform plan`.
-     - Applying the configuration with `terraform apply`.
-
-3. **Configured Each Instance**:
-
-   - **Jenkins Server**:
-     - I installed Jenkins on the designated server.
-     - I added the required plugins, to facilitate secure operations.
-     - I configured credentials within Jenkins, including the GitHub access token, Docker credentials, and SSH access to EC2.
-     - I created a Jenkins pipeline and prepared it for the CI/CD process.
-     - I installed Docker on the Jenkins instance to handle containerization tasks.
-
-   - **Node.js Instance**:
-     - I installed Docker on the Node.js instance to support containerized applications.
-     - I set up Node Exporter to collect and expose metrics for monitoring purposes.
-
-   - **Monitoring Instance**:
-     - I set up Prometheus on the monitoring instance to scrape and store metrics from various sources.
-     - I installed and configured Grafana to visualize the metrics collected by Prometheus.
-
-4. **Created a Webhook on GitHub**:
-   - To automate the build process, I created a webhook on the GitHub repository. This webhook triggers the Jenkins pipeline automatically whenever new code is pushed to the repository.
-
-By following these steps, I successfully set up the necessary infrastructure, configured each instance properly, and ensured that the CI/CD pipeline is ready to handle automated deployments triggered by GitHub webhooks.
-
-## Challenges Faced
-
-- **Cleaning Up Old Builds**:
-  - Too many builds were eating up disk space with old Docker images, which could crash the server. I added a stage in the Jenkins pipeline to clean up these old images and builds.
-
-- **Security Groups**:
-  - Setting up security groups to keep the network communication secure and functional was tricky. I had to make sure the rules allowed the necessary traffic while keeping everything safe.
-
-- **Handling Credentials**:
-  - Keeping all the credentials (GitHub tokens, Docker creds, SSH keys) secure and correctly set up in Jenkins was a bit of a headache. I had to double-check everything to make sure it was all good.
-
-- **Terraform Dependencies**:
-  - Making sure Terraform created resources in the right order was a challenge. I had to keep validating the config to avoid messing things up.
-
-- **Monitoring Setup**:
-  - Getting Prometheus and Grafana up and running took some effort. I had to configure them to collect and show the right metrics and make sure Node Exporter was working on the Node.js instance.
-
-- **Setting Up Webhooks**:
-  - Setting up the GitHub webhook to automatically trigger Jenkins builds was a bit fiddly. I had to make sure it pointed to the right place and handled 
-
-<img width="1536" height="1024" alt="Architecture Diagram of crud-app" src="https://github.com/user-attachments/assets/7af86469-2f04-4a75-ae3f-e4644114cdbd" />
-
-
+- Go to RDS → Create database
+- Select:
+    - Engine: MySQL
+    - DB identifier: testdb-1
+    - Username: root
+    - Password: *********
+    - Public access: Yes (for testing)
+- After creation, note the endpoint:
+  ```bash
+  testdb-1.cp24ccc4chcf.ap-southeast-1.rds.amazonaws.com
+  ```
 
 ---
+
+### 4. 📦 Clone the Repository
+
+  ```bash
+  git clone https://github.com/ashubambal/crud-app.git
+  cd crud-app
+  ```
+
+---
+
+### 5. 🔐 Access Jenkins
+
+- Visit: http://<EC2_PUBLIC_IP>:8080
+- Get the Jenkins unlock key:
+
+  ```bash
+  sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+  ```
+---
+
+### 6. ➕ Install Jenkins Plugins
+
+- Install the following plugins:
+    - Docker Pipeline
+    - SonarQube Scanner
+    - Pipeline Stage View
+
+---
+
+### 7. 🔍 Setup SonarCloud
+
+- Go to SonarCloud
+- Click: "Analyze a new project"
+- Link your GitHub repository
+- Organization name: Jenkins
+- Click: "Create organization"
+- Create a Sonar Token (keep it safe)
+    - Step two create sonar token -> Click on My-account -> Security -> Ganrate token
+
+---
+
+### 8. 🔑 Add Credentials in Jenkins
+
+- Go to:
+- Manage Jenkins → Credentials → System → Global credentials → Add Credentials
+- Add the following:
+```
+| ID            | Type                | Use                       |
+| ------------- | ------------------- | ------------------------- |
+| `sonar-token` | Secret text         | SonarCloud authentication |
+| `docker-cred` | Username + Password | DockerHub login           |
+```  
+---
+
+### 9. ⚙️ Configure SonarQube in Jenkins
+
+- Go to:
+- Manage Jenkins → Global Tool Configuration
+- SonarQube Scanner installations:
+    - Name: sonar-scanner
+    - Version: select appropriate version -> save
+- Go to:
+- Manage Jenkins → System   
+- SonarQube servers:
+    - Name: SonarCloud
+    - Select Environment Variable check box
+    - URL: https://sonarcloud.io
+    - Credentials: sonar-token -> save
+
+---
+
+### 10. 🚀 Create Jenkins Pipeline
+
+- Create a new item (ci-jenkins) -> pipeline -> click on check box (GitHub hook trigger for GITScm polling)
+- Pipeline (Pipeline script from SCM) -> Use GitHub as source -> save
+- Add webhook support -> Go to Github Repo settings -> Webhooks -> http://<EC2-IP>:8080/github-webhook/ -> Content type * (appliation/json) -> save
+
+---
+
+### 11. 🌐 Run & Access the App
+
+  ```bash
+  http://<EC2_PUBLIC_IP>:3000
+  ```
+---
+
+## 📁 Project Structure
+
+  ```bash
+crud-app/
+├── app.js                  # Express app
+├── Dockerfile              # Docker container config
+├── Jenkinsfile             # Jenkins pipeline
+├── package.json
+├── public/                 # Static frontend
+├── scripts/
+│   └── docker-jenkins-install.sh
+└── .env                    # (not committed, local secrets)
+  ```
+---
+
+## ✅ Technologies Used
+
+- Node.js + Express
+- MySQL (AWS RDS)
+- Docker
+- Jenkins
+- SonarCloud
+- GitHub
+
+---
+
+## Website UI and Operation Output 
+
+<p align="center">
+  <img src="assets/recording.gif" alt="Demo" width="700">
+</p>
+
+<img width="1096" height="647" alt="project2 image" src="https://github.com/user-attachments/assets/efafa7ac-071e-4230-bc99-ad50eac3c128" />
+
+
