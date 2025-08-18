@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f $(docker ps -q) || true'
-                    sh 'docker run -d -p 3000:3000 kalyanibambal97/crud-123:v1'
+                    sh 'docker run -d -p 3000:3000 kalyanibambal97/crud-123:latest'
                 }
             }
         }
