@@ -124,5 +124,8 @@ By following these steps, I successfully set up the necessary infrastructure, co
 - **Setting Up Webhooks**:
   - Setting up the GitHub webhook to automatically trigger Jenkins builds was a bit fiddly. I had to make sure it pointed to the right place and handled 
 
+<img width="1536" height="1024" alt="Architecture Diagram of crud-app" src="https://github.com/user-attachments/assets/7af86469-2f04-4a75-ae3f-e4644114cdbd" />
+
+
 
 ---
