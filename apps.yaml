@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: crud-app
-  namespace: crud
+  name: app
+  namespace: app
   labels:
-    name: crud-app
+    name: app
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      name: crud-app
+      name: app
   template:
     metadata:
-      name: crud-app-pod
+      name: app
       labels:
-        name: crud-app
+        name: app
     spec:
      containers:
-      - name: crud-pod
+      - name: app
         image: kalyanibambal97/crud-123:v10
         ports:
         - containerPort: 80
