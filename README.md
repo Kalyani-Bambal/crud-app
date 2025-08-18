@@ -24,6 +24,7 @@ A simple CRUD (Create, Read, Update, Delete) Node.js application with MySQL data
 ### CI/CD Pipeline Diagram
  <img width="1536" height="1024" alt="Architecture Diagram of crud-app" src="https://github.com/user-attachments/assets/7af86469-2f04-4a75-ae3f-e4644114cdbd" />
 ---  
+
 ### 2. ⚙️ Run EC2 Setup Script
 
 - Run the script to install:
@@ -164,12 +165,11 @@ crud-app/
 
 ---
 
-## Website UI and Operation Output 
+## Website UI and Operation  
 
 <p align="center">
   <img src="assets/recording.gif" alt="Demo" width="700">
 </p>
 
-<img width="1096" height="647" alt="project2 image" src="https://github.com/user-attachments/assets/efafa7ac-071e-4230-bc99-ad50eac3c128" />
 
 
